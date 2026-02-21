@@ -2,7 +2,6 @@ const homePage = document.getElementById("homePage");
 const readerPage = document.getElementById("readerPage");
 
 const fileInput = document.getElementById("fileInput");
-const fileName = document.getElementById("fileName");
 const textInput = document.getElementById("textInput");
 const submitBtn = document.getElementById("submitBtn");
 
@@ -15,24 +14,63 @@ backBtn.addEventListener("click", () => navigateToHome());
 
 let currentText = "";
 
-function handleFileSelect(event) {
+async function handleFileSelect(event) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    fileName.textContent = file.name;
+    currentText = "Loading...";
+    navigateToReader();
 
     let text = "";
 
     if (file.type === "text/plain") {
-        text = fetch("myText.txt")
-            .then((res) => res.text())
-            .catch((e) => alert("Error reading file. Please try again." + e));
+        text = await readTextFile(file);
     } else if (file.type === "application/pdf") {
-        // TODO add pdf reading
+        text = await readPdfFile(file);
     }
 
     currentText = text;
     navigateToReader();
+}
+
+function readTextFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsText(file);
+    });
+}
+
+function readPdfFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = async function () {
+            try {
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+
+                let fullText = "";
+
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const textContent = await page.getTextContent();
+
+                    fullText += textContent.items
+                        .map((item) => item.str)
+                        .join(" ") + "\n";
+                }
+
+                resolve(fullText);
+            } catch (err) {
+                reject(err);
+            }
+        };
+
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
 }
 
 function handleTextSubmit() {
@@ -62,7 +100,6 @@ function navigateToHome() {
 
     textInput.value = "";
     fileInput.value = "";
-    fileName.textContent = "Choose a .txt or .pdf file";
 
     globalThis.scrollTo(0, 0);
 }
