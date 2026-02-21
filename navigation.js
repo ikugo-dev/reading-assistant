@@ -29,48 +29,8 @@ async function handleFileSelect(event) {
         text = await readPdfFile(file);
     }
 
-    currentText = text;
+    currentText = formatTextForDisplay(text);
     navigateToReader();
-}
-
-function readTextFile(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsText(file);
-    });
-}
-
-function readPdfFile(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = async function () {
-            try {
-                const typedarray = new Uint8Array(this.result);
-                const pdf = await pdfjsLib.getDocument(typedarray).promise;
-
-                let fullText = "";
-
-                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                    const page = await pdf.getPage(pageNum);
-                    const textContent = await page.getTextContent();
-
-                    fullText += textContent.items
-                        .map((item) => item.str)
-                        .join(" ") + "\n";
-                }
-
-                resolve(fullText);
-            } catch (err) {
-                reject(err);
-            }
-        };
-
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(file);
-    });
 }
 
 function handleTextSubmit() {
@@ -81,7 +41,7 @@ function handleTextSubmit() {
         return;
     }
 
-    currentText = text;
+    currentText = formatTextForDisplay(text);
     navigateToReader();
 }
 
@@ -105,16 +65,5 @@ function navigateToHome() {
 }
 
 function displayText() {
-    function escapeHtml(text) {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    const paragraphs = currentText
-        .split("\n\n")
-        .filter((p) => p.trim())
-        .map((p) => `<p>${escapeHtml(p)}</p>`)
-        .join("");
-
-    textContent.innerHTML = paragraphs || `<p>${escapeHtml(currentText)}</p>`;
+    textContent.innerHTML = currentText;
 }
