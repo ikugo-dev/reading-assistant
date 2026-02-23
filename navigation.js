@@ -13,8 +13,13 @@ submitBtn.addEventListener("click", () => handleTextSubmit());
 backBtn.addEventListener("click", () => navigateToHome());
 
 let currentText = "";
+let paragraphs = [];
 
-globalThis.getCurrentText = () => currentText;
+function updateCurrentText() {
+    currentText = paragraphs
+        .map((p, i) => `<p id="paragraph${i}">${p.trim()}</p>`)
+        .join("");
+}
 
 async function handleFileSelect(event) {
     const file = event.target.files?.[0];
@@ -24,12 +29,14 @@ async function handleFileSelect(event) {
     navigateToReader();
 
     if (file.type === "text/plain") {
-        text = await readTextFile(file);
+        paragraphs = await formatTextToParagraphs(await readTextFile(file));
+        console.log(paragraphs);
     } else if (file.type === "application/pdf") {
-        text = await readPdfFile(file);
+        paragraphs = await formatPdfToParagraphs(await readPdfFile(file));
+        console.log(paragraphs);
     }
 
-    currentText = formatTextForDisplay(text);
+    updateCurrentText();
     navigateToReader();
 }
 
@@ -40,8 +47,9 @@ function handleTextSubmit() {
         alert("Please enter some text first.");
         return;
     }
+    paragraphs = formatTextToParagraphs(text);
 
-    currentText = formatTextForDisplay(text);
+    updateCurrentText();
     navigateToReader();
 }
 

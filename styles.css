@@ -131,6 +131,12 @@ input[type="range"] {
     white-space: normal;
 }
 
+#textContent p.speaking {
+    background-color: yellow;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
 .reader-settings {
   display: flex;
   gap: 1em;

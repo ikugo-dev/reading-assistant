@@ -44,7 +44,7 @@ function readPdfFile(file) {
     });
 }
 
-function formatTextForDisplay(text) {
+function formatTextToParagraphs(text) {
     if (!text) return "";
 
     text = text.replace(/\r\n/g, "\n")
@@ -55,10 +55,10 @@ function formatTextForDisplay(text) {
         .filter((p) => p)
         .map((p, i) => `<p id="paragraph${i}">${p.trim()}</p>`);
 
-    return paragraphs.join("");
+    return paragraphs;
 }
 
-function formatPdfForDisplay(text) {
+function formatPdfToParagraphs(text) {
     if (!text) return "";
 
     text = text.replace(/\r\n/g, "\n")
@@ -68,8 +68,23 @@ function formatPdfForDisplay(text) {
 
     const paragraphs = text
         .split(/\n\n/)
-        .filter((p) => p)
-        .map((p, i) => `<p id="paragraph${i}">${p.trim()}</p>`);
+        .filter((p) => p);
 
-    return paragraphs.join("");
+    return paragraphs;
+}
+
+function highlightParagraph(index) {
+    document.querySelectorAll("#textContent p").forEach((p) =>
+        p.classList.remove("speaking")
+    );
+    const el = document.getElementById(`paragraph${index}`);
+    if (!el) return;
+    el.classList.add("speaking");
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function clearHighlight() {
+    document.querySelectorAll("#textContent p").forEach((p) =>
+        p.classList.remove("speaking")
+    );
 }
