@@ -8,7 +8,6 @@
 }
 
 * {
-    font-family: "Lexend", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -18,6 +17,7 @@
 }
 
 body {
+    font-family: "Lexend", sans-serif; 
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -130,3 +130,41 @@ input[type="range"] {
 #textContent > p {
     white-space: normal;
 }
+
+.reader-settings {
+  display: flex;
+  gap: 1em;
+  margin: 1.5em 0 2.5em 0;
+  flex-wrap: wrap;
+}
+
+.reader-settings .setting {
+  flex: 1;
+  min-width: 12em;
+}
+
+.reader-settings label {
+  display: block;
+  margin-bottom: 0.4em;
+  color: var(--text-secondary);
+  font-size: 0.95em;
+}
+
+.reader-settings select {
+  width: 100%;
+  padding: 0.9em 1em;
+  border: 0.15em solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.reader-settings select:focus {
+  border-color: var(--accent);
+}
+
+#textContent.font-lexend { font-family: "Lexend", sans-serif; }
+#textContent.font-arial { font-family: Arial, sans-serif; }
+#textContent.font-verdana { font-family: Verdana, sans-serif; }
+#textContent.font-times { font-family: "Times New Roman", Times, serif; }
+#textContent.font-opendyslexic { font-family: "OpenDyslexic", Arial, sans-serif; }

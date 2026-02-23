@@ -5,12 +5,17 @@ const speedSlider = document.getElementById("speedSlider");
 const speedValue = document.getElementById("speedValue");
 const volumeSlider = document.getElementById("volumeSlider");
 const volumeValue = document.getElementById("volumeValue");
+const languageSelect = document.getElementById("languageSelect");
+const fontSelect = document.getElementById("fontSelect");
+const textContentEl = document.getElementById("textContent");
 
 playBtn.addEventListener("click", () => togglePlay());
 rewindBtn.addEventListener("click", () => rewind());
 forwardBtn.addEventListener("click", () => forward());
 speedSlider.addEventListener("input", (e) => updateSpeed(e));
 volumeSlider.addEventListener("input", (e) => updateVolume(e));
+languageSelect.addEventListener("change", () => onLanguageChange());
+fontSelect.addEventListener("change", () => applyFont());
 
 let utterance = null;
 let isSpeaking = false;
@@ -20,9 +25,44 @@ let textIndex = 0;
 const JUMP_CHARS = 350;        
 
 function getText() {
- 
-  const t = globalThis.getCurrentText ? globalThis.getCurrentText() : "";
-  return (t || "").trim();
+  return (textContentEl?.innerText || "").trim();
+}
+
+let availableVoices = [];
+
+function loadVoices() {
+  availableVoices = speechSynthesis.getVoices() || [];
+}
+loadVoices();
+speechSynthesis.onvoiceschanged = loadVoices;
+
+function pickBestVoiceForLang(lang) {
+  const voices = availableVoices.length ? availableVoices : speechSynthesis.getVoices();
+  if (!voices || !voices.length) return null;
+
+  const normLang = (lang || "").toLowerCase();
+
+  const matches = (v) => (v.lang || "").toLowerCase() === normLang || (v.lang || "").toLowerCase().startsWith(normLang);
+
+  const qualityScore = (v) => {
+    const name = (v.name || "").toLowerCase();
+    let score = 0;
+    if (name.includes("neural") || name.includes("natural") || name.includes("premium")) score += 100;
+    if (name.includes("google")) score += 60;
+    if (name.includes("microsoft")) score += 30;
+    if (v.default) score += 10;
+    return score;
+  };
+
+  const candidates = voices.filter(matches);
+  if (!candidates.length) return null;
+
+  candidates.sort((a, b) => qualityScore(b) - qualityScore(a));
+  return candidates[0];
+}
+
+function getSelectedLang() {
+  return languageSelect?.value || "en-US";
 }
 
 function buildUtterance(fromIndex = 0) {
@@ -37,7 +77,14 @@ function buildUtterance(fromIndex = 0) {
 
   u.volume = parseInt(volumeSlider.value, 10) / 100;
 
-  u.lang = "sr-RS";
+  const lang = getSelectedLang();
+  u.lang = lang;
+
+  const bestVoice = pickBestVoiceForLang(lang);
+  if (bestVoice) {
+    u.voice = bestVoice;
+    u.lang = bestVoice.lang; 
+  }
 
   u.onstart = () => {
     isSpeaking = true;
@@ -121,10 +168,29 @@ function updateVolume(event) {
   if (isSpeaking) startSpeaking(textIndex);
 }
 
+function applyFont() {
+  const value = fontSelect?.value || "lexend";
+
+  textContentEl.classList.remove(
+    "font-lexend",
+    "font-arial",
+    "font-verdana",
+    "font-times",
+    "font-opendyslexic"
+  );
+
+  textContentEl.classList.add(`font-${value}`);
+}
+
+function onLanguageChange() {
+  if (isSpeaking) startSpeaking(textIndex);
+}
+
 globalThis.onTextReady = () => {
   textIndex = 0;
   speechSynthesis.cancel();
   isSpeaking = false;
   isPaused = false;
   playBtn.textContent = "Play";
+  applyFont();
 };

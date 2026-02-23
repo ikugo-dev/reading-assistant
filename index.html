@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/stylesheet.css">
     <script defer src="navigation.js"></script>
     <script defer src="controls.js"></script>
     <script defer src="reading.js"></script>
@@ -54,6 +55,30 @@
             <button class="back-btn" id="backBtn">← Back</button>
 
             <div class="text-content" id="textContent"> </div>
+
+            <div class="reader-settings">
+                <div class="setting">
+                    <label for="languageSelect">Reading language</label>
+                    <select id="languageSelect">
+                        <option value="en-US" selected>English (US)</option>
+                        <option value="en-GB">English (UK)</option>
+                        <option value="sr-RS">Serbian (sr-RS)</option>
+                        <option value="de-DE">German</option>
+                        <option value="fr-FR">French</option>
+                    </select>
+                </div>
+
+                <div class="setting">
+                    <label for="fontSelect">Font</label>
+                    <select id="fontSelect">
+                        <option value="lexend" selected>Lexend</option>
+                        <option value="arial">Arial</option>
+                        <option value="verdana">Verdana</option>
+                        <option value="times">Times New Roman</option>
+                        <option value="opendyslexic">OpenDyslexic</option>
+                    </select>
+                </div>
+            </div>
 
             <div class="audio-controls">
                 <div class="controls-row">
