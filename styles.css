@@ -130,3 +130,9 @@ input[type="range"] {
 #textContent > p {
     white-space: normal;
 }
+
+#textContent p.speaking {
+    background-color: yellow;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
