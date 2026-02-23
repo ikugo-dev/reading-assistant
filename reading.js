@@ -52,8 +52,7 @@ function formatTextToParagraphs(text) {
 
     const paragraphs = text
         .split(/\n\n/)
-        .filter((p) => p)
-        .map((p, i) => `<p id="paragraph${i}">${p.trim()}</p>`);
+        .filter((p) => p);
 
     return paragraphs;
 }

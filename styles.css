@@ -108,7 +108,7 @@ button:hover {
     right: 0;
     background: var(--bg-secondary);
     border-top: 0.2em solid var(--border-color);
-    padding: 2em;
+    padding: 1em;
 }
 
 .controls-row {
@@ -121,12 +121,6 @@ button:hover {
     margin: 0.5em;
 }
 
-input[type="range"] {
-    width: 100%;
-    background: var(--bg-primary);
-    -webkit-appearance: none;
-}
-
 #textContent > p {
     white-space: normal;
 }
@@ -137,35 +131,46 @@ input[type="range"] {
     transition: background-color 0.3s ease;
 }
 
-.reader-settings {
-  display: flex;
-  gap: 1em;
-  margin: 1.5em 0 2.5em 0;
-  flex-wrap: wrap;
+.row {
+    display: flex;
+    gap: 1em;
+    flex-wrap: nowrap;
+    align-items: flex-end;
 }
 
-.reader-settings .setting {
-  flex: 1;
-  min-width: 12em;
+.slider input[type="range"] {
+    width: 100%;
+    flex: none;
+    background: var(--bg-primary);
+    -webkit-appearance: none;
+}
+.slider {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
 
-.reader-settings label {
-  display: block;
-  margin-bottom: 0.4em;
-  color: var(--text-secondary);
-  font-size: 0.95em;
+.dropdown {
+    flex: 1;
+    min-width: 0;
 }
-
-.reader-settings select {
-  width: 100%;
-  padding: 0.9em 1em;
-  border: 0.15em solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  outline: none;
+.dropdown label,
+.slider label {
+    display: block;
+    margin-bottom: 0.4em;
+    color: var(--text-secondary);
+    font-size: 0.95em;
 }
-
-.reader-settings select:focus {
+.dropdown select {
+    width: 50%;
+    padding: 0.5em;
+    border: 0.15em solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    outline: none;
+}
+.dropdown select:focus {
   border-color: var(--accent);
 }
 
