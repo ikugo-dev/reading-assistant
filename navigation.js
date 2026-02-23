@@ -15,24 +15,33 @@ backBtn.addEventListener("click", () => navigateToHome());
 
 let currentText = "";
 
+globalThis.getCurrentText = () => currentText;
+
 function handleFileSelect(event) {
     const file = event.target.files?.[0];
     if (!file) return;
 
     fileName.textContent = file.name;
 
-    let text = "";
-
     if (file.type === "text/plain") {
-        text = fetch("myText.txt")
-            .then((res) => res.text())
-            .catch((e) => alert("Error reading file. Please try again." + e));
-    } else if (file.type === "application/pdf") {
-        // TODO add pdf reading
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            currentText = reader.result;
+            navigateToReader();
+        };
+
+        reader.onerror = () => {
+            alert("Error reading file.");
+        };
+
+        reader.readAsText(file);
+        return;
     }
 
-    currentText = text;
-    navigateToReader();
+    if (file.type === "application/pdf") {
+        alert("PDF reading not implemented yet.");
+    }
 }
 
 function handleTextSubmit() {
@@ -50,6 +59,8 @@ function handleTextSubmit() {
 function navigateToReader() {
     homePage.classList.remove("active");
     readerPage.classList.add("active");
+
+    globalThis.onTextReady?.(currentText);
 
     displayText();
 
