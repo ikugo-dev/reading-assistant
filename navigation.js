@@ -2,7 +2,6 @@ const homePage = document.getElementById("homePage");
 const readerPage = document.getElementById("readerPage");
 
 const fileInput = document.getElementById("fileInput");
-const fileName = document.getElementById("fileName");
 const textInput = document.getElementById("textInput");
 const submitBtn = document.getElementById("submitBtn");
 
@@ -17,31 +16,21 @@ let currentText = "";
 
 globalThis.getCurrentText = () => currentText;
 
-function handleFileSelect(event) {
+async function handleFileSelect(event) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    fileName.textContent = file.name;
+    currentText = "Loading...";
+    navigateToReader();
 
     if (file.type === "text/plain") {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-            currentText = reader.result;
-            navigateToReader();
-        };
-
-        reader.onerror = () => {
-            alert("Error reading file.");
-        };
-
-        reader.readAsText(file);
-        return;
+        text = await readTextFile(file);
+    } else if (file.type === "application/pdf") {
+        text = await readPdfFile(file);
     }
 
-    if (file.type === "application/pdf") {
-        alert("PDF reading not implemented yet.");
-    }
+    currentText = formatTextForDisplay(text);
+    navigateToReader();
 }
 
 function handleTextSubmit() {
@@ -52,7 +41,7 @@ function handleTextSubmit() {
         return;
     }
 
-    currentText = text;
+    currentText = formatTextForDisplay(text);
     navigateToReader();
 }
 
@@ -73,22 +62,10 @@ function navigateToHome() {
 
     textInput.value = "";
     fileInput.value = "";
-    fileName.textContent = "Choose a .txt or .pdf file";
 
     globalThis.scrollTo(0, 0);
 }
 
 function displayText() {
-    function escapeHtml(text) {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    const paragraphs = currentText
-        .split("\n\n")
-        .filter((p) => p.trim())
-        .map((p) => `<p>${escapeHtml(p)}</p>`)
-        .join("");
-
-    textContent.innerHTML = paragraphs || `<p>${escapeHtml(currentText)}</p>`;
+    textContent.innerHTML = currentText;
 }
