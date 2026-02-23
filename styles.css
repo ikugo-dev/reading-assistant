@@ -84,14 +84,14 @@ button {
     background: var(--accent);
     color: white;
     border: none;
-    padding: 1em 2em;
+    padding: 1em;
     cursor: pointer;
 }
 button:hover {
     background: var(--accent);
 }
-.icon {
-    width: 8%
+.fa-solid {
+    font-size: 1.5em;
 }
 
 .play-btn {
@@ -137,9 +137,12 @@ button:hover {
     flex-wrap: nowrap;
     align-items: flex-end;
 }
+.row > * {
+    padding: 0.2em;
+}
 
 .slider input[type="range"] {
-    width: 100%;
+    width: 95%;
     flex: none;
     background: var(--bg-primary);
     -webkit-appearance: none;
@@ -147,24 +150,15 @@ button:hover {
 .slider {
     flex: 3;
     display: flex;
-    flex-direction: column;
-    min-width: 0;
 }
 
 .dropdown {
     flex: 1;
-    min-width: 0;
-}
-.dropdown label,
-.slider label {
-    display: block;
-    margin-bottom: 0.4em;
-    color: var(--text-secondary);
-    font-size: 0.95em;
+    display: flex;
 }
 .dropdown select {
-    width: 50%;
-    padding: 0.5em;
+    width: 100%;
+    padding: 0.2em;
     border: 0.15em solid var(--border-color);
     background: var(--bg-secondary);
     color: var(--text-primary);

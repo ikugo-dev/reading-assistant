@@ -1,11 +1,14 @@
 let paragraphIndex = 0;
 let currentGeneration = 0;
 
+const playHTML = '<i class="fa-solid fa-play"></i>';
+const stopHTML = '<i class="fa-solid fa-stop"></i>';
+
 function speakParagraph(index, generation) {
     if (generation !== currentGeneration) return;
     if (index >= paragraphs.length) {
         clearHighlight();
-        playBtn.textContent = "Play";
+        playBtn.innerHTML = playHTML;
         return;
     }
 
@@ -41,7 +44,7 @@ function speakParagraph(index, generation) {
         if (generation !== currentGeneration) return;
         if (e.error === "canceled" || e.error === "interrupted") return;
         clearHighlight();
-        playBtn.textContent = "Play";
+        playBtn.innerHTML = playHTML;
     };
 
     speechSynthesis.speak(u);
@@ -50,7 +53,7 @@ function speakParagraph(index, generation) {
 function startSpeaking(from) {
     currentGeneration++;
     speechSynthesis.cancel();
-    playBtn.textContent = "Stop";
+    playBtn.innerHTML = stopHTML;
     const gen = currentGeneration;
     speakParagraph(from, gen);
 }
@@ -58,7 +61,7 @@ function startSpeaking(from) {
 function stopSpeaking() {
     currentGeneration++;
     speechSynthesis.cancel();
-    playBtn.textContent = "Play";
+    playBtn.innerHTML = playHTML;
     clearHighlight();
 }
 

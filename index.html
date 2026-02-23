@@ -10,12 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/stylesheet.css">
+    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
     <script defer src="navigation.js"></script>
     <script defer src="controls.js"></script>
     <script defer src="reading.js"></script>
     <script defer src="tts.js"></script>
     <script defer src="tts-options.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://kit.fontawesome.com/cfc3f79fe8.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -24,29 +26,25 @@
             <div class="hero">
                 <h1>Welcome</h1>
                 <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ac lorem ornare, lobortis nunc
-                    quis, hendrerit massa. Cras non varius est. Integer interdum, turpis vel commodo sagittis, nisi
-                    magna euismod.
+                    This is a learning support tool designed to help you read.<br>
+                    Upload a file to get started.
                 </span>
             </div>
 
             <div class="input-section">
                 <div class="file-upload">
                     <label for="fileInput" class="file-label">
-                        <img class="icon" src="./icons/upload.svg"> </img>
-                        Upload .pdf or .txt here...
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        &nbsp;Choose a .txt or .pdf file
                     </label>
-
-                    <div id="fileName" style="margin-top:-1.5em; color:#666;">
-                        Choose a .txt or .pdf file
-                    </div>
-
                     <input type="file" id="fileInput" accept=".txt,.pdf" hidden>
                 </div>
 
                 <div class="text-input">
-                    <textarea id="textInput" placeholder="Paste your text here..." rows="8"></textarea>
-                    <button id="submitBtn" class="submit-btn">Submit</button>
+                    <textarea id="textInput" placeholder="Enter your text here" rows="8"></textarea>
+                    <button id="submitBtn" class="submit-btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -54,27 +52,28 @@
 
     <div id="readerPage" class="page">
         <div class="reader-container">
-            <button class="back-btn" id="backBtn">← Back</button>
+            <button class="back-btn" id="backBtn">
+                <i class="fa-solid fa-x"></i>
+            </button>
 
             <div class="text-content" id="textContent"> </div>
-
 
             <div class="audio-controls">
                 <div class="controls-row">
                     <button class="control-btn" id="rewind">
-                        -10s
+                        <i class="fa-solid fa-backward-step"></i>
                     </button>
                     <button class="play-btn" id="playBtn">
-                        Play
+                        <i class="fa-solid fa-play"></i>
                     </button>
                     <button class="control-btn" id="forward">
-                        +10s
+                        <i class="fa-solid fa-forward-step"></i>
                     </button>
                 </div>
 
                 <div class="row">
                     <div class="dropdown">
-                        <label for="languageSelect">Reading language</label>
+                        <i class="fa-solid fa-language"></i>
                         <select id="languageSelect">
                             <option value="en-US" selected>English (US)</option>
                             <option value="en-GB">English (UK)</option>
@@ -84,16 +83,14 @@
                         </select>
                     </div>
                     <div class=slider>
-                        <label for="speedSlider">
-                            Speed <span id="speedValue">1.0x</span>
-                        </label>
+                        <i class="fa-solid fa-person-running"></i>
                         <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="dropdown">
-                        <label for="fontSelect">Font</label>
+                        <i class="fa-solid fa-font"></i>
                         <select id="fontSelect">
                             <option value="lexend" selected>Lexend</option>
                             <option value="arial">Arial</option>
@@ -103,9 +100,7 @@
                         </select>
                     </div>
                     <div class=slider>
-                        <label for="volumeSlider">
-                            Volume <span id="volumeValue">100%</span>
-                        </label>
+                        <i class="fa-solid fa-volume"></i>
                         <input type="range" id="volumeSlider" min="0" max="100" step="1" value="100">
                     </div>
                 </div>
