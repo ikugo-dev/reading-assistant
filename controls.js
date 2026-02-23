@@ -12,105 +12,15 @@ forwardBtn.addEventListener("click", () => forward());
 speedSlider.addEventListener("input", (e) => updateSpeed(e));
 volumeSlider.addEventListener("input", (e) => updateVolume(e));
 
-let utterance = null;
-let isSpeaking = false;
-let isPaused = false;
-
-let paragraphIndex = 0;
-
-function highlightParagraph(index) {
-    document.querySelectorAll("#textContent p").forEach((p) =>
-        p.classList.remove("speaking")
-    );
-
-    const el = document.getElementById(`paragraph${index}`);
-    if (!el) return;
-
-    el.classList.add("speaking");
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
-function clearHighlight() {
-    document.querySelectorAll("#textContent p").forEach((p) =>
-        p.classList.remove("speaking")
-    );
-}
-
-function buildUtterance(index) {
-    const text = paragraphs[index].trim();
-    if (!text) return null;
-
-    const u = new SpeechSynthesisUtterance(text);
-
-    u.rate = parseFloat(speedSlider.value);
-    u.volume = parseInt(volumeSlider.value, 10) / 100;
-    u.lang = "sr-RS";
-
-    u.onstart = () => {
-        isSpeaking = true;
-        isPaused = false;
-        playBtn.textContent = "Pause";
-        highlightParagraph(index);
-    };
-
-    u.onend = () => {
-        if (isManualChange) {
-            isManualChange = false; // consume the flag here
-            return;
-        }
-
-        paragraphIndex = index + 1;
-        if (paragraphIndex < paragraphs.length) {
-            startSpeaking(paragraphIndex);
-        } else {
-            isSpeaking = false;
-            isPaused = false;
-            playBtn.textContent = "Play";
-            clearHighlight();
-        }
-    };
-
-    u.onerror = () => {
-        isSpeaking = false;
-        isPaused = false;
-        playBtn.textContent = "Play";
-        clearHighlight();
-    };
-
-    return u;
-}
-
-let isManualChange = false;
-function startSpeaking(from = 0) {
-    isManualChange = true;
-    speechSynthesis.cancel();
-    // isManualChange = false;
-
-    utterance = buildUtterance(from);
-    if (!utterance) return;
-
-    speechSynthesis.speak(utterance);
-}
-
 function togglePlay() {
     if (!paragraphs.length) {
         alert("Nema teksta za čitanje. Unesite tekst na početnoj strani.");
         return;
     }
-
-    if (!isSpeaking) {
-        startSpeaking(paragraphIndex);
-        return;
-    }
-
-    if (!isPaused) {
-        speechSynthesis.pause();
-        isPaused = true;
-        playBtn.textContent = "Resume";
+    if (speechSynthesis.speaking) {
+        stopSpeaking();
     } else {
-        speechSynthesis.resume();
-        isPaused = false;
-        playBtn.textContent = "Pause";
+        startSpeaking(paragraphIndex);
     }
 }
 
@@ -139,11 +49,3 @@ function updateVolume(event) {
 
     if (isSpeaking) startSpeaking(paragraphIndex);
 }
-
-globalThis.onTextReady = () => {
-    paragraphIndex = 0;
-    speechSynthesis.cancel();
-    isSpeaking = false;
-    isPaused = false;
-    playBtn.textContent = "Play";
-};

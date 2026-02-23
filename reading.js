@@ -72,3 +72,19 @@ function formatPdfToParagraphs(text) {
 
     return paragraphs;
 }
+
+function highlightParagraph(index) {
+    document.querySelectorAll("#textContent p").forEach((p) =>
+        p.classList.remove("speaking")
+    );
+    const el = document.getElementById(`paragraph${index}`);
+    if (!el) return;
+    el.classList.add("speaking");
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function clearHighlight() {
+    document.querySelectorAll("#textContent p").forEach((p) =>
+        p.classList.remove("speaking")
+    );
+}
