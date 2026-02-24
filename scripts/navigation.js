@@ -30,10 +30,8 @@ async function handleFileSelect(event) {
 
     if (file.type === "text/plain") {
         paragraphs = await formatTextToParagraphs(await readTextFile(file));
-        console.log(paragraphs);
     } else if (file.type === "application/pdf") {
         paragraphs = await formatPdfToParagraphs(await readPdfFile(file));
-        console.log(paragraphs);
     }
 
     updateCurrentText();
