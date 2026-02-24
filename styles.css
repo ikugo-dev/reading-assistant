@@ -264,3 +264,7 @@ button:hover {
     padding-bottom: 15em;
   }
 }
+
+.icon {
+    width: 2em;
+}

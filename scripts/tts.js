@@ -1,8 +1,8 @@
 let paragraphIndex = 0;
 let currentGeneration = 0;
 
-const playHTML = '<i class="fa-solid fa-play"></i>';
-const stopHTML = '<i class="fa-solid fa-stop"></i>';
+const playHTML = '<img class="icon" src="./icons/play.svg">';
+const stopHTML = '<img class="icon" src="./icons/stop.svg">';
 
 function speakParagraph(index, generation) {
     if (generation !== currentGeneration) return;
