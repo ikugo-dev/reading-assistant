@@ -25,7 +25,7 @@ body {
 
 .page {
     display: none;
-    min-height: 100em;
+    min-height: 100vh;
 }
 .page.active {
     display: block;
@@ -46,6 +46,10 @@ body {
     max-width: 42em;
     margin: auto;
     padding: 4em;
+}
+
+.reader-container {
+  padding-bottom: 10em; 
 }
 
 .hero {
@@ -115,7 +119,9 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
+
 
 .controls-row > button {
     margin: 0.5em;
@@ -173,3 +179,88 @@ button:hover {
 #textContent.font-verdana { font-family: Verdana, sans-serif; }
 #textContent.font-times { font-family: "Times New Roman", Times, serif; }
 #textContent.font-opendyslexic { font-family: "OpenDyslexic", Arial, sans-serif; }
+
+@media (max-width: 900px) {
+  .container, .reader-container {
+    max-width: 100%;
+    padding: 2.5em;
+  }
+
+  .fa-solid {
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 600px) {
+  .container, .reader-container {
+    padding: 1.25em;
+  }
+
+  .hero h1 {
+    font-size: 1.6em;
+  }
+
+  button {
+    padding: 0.9em;
+  }
+
+  .play-btn {
+    width: 3.6em;
+    height: 3.6em;
+  }
+
+  .audio-controls {
+    padding: 0.8em;
+  }
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6em;
+  }
+
+  .dropdown, .slider {
+    width: 100%;
+  }
+
+  .slider {
+    gap: 0.6em;
+    align-items: center;
+  }
+
+  .slider input[type="range"] {
+    width: 100%;
+  }
+
+  .dropdown select {
+    padding: 0.65em;
+  }
+
+  .row > * {
+    padding: 0;
+  }
+
+  #textContent {
+    font-size: 1.02em;
+    line-height: 1.75;
+  }
+
+
+  .reader-container {
+    padding-bottom: 14em;
+  }
+}
+
+
+@media (max-width: 380px) {
+  .fa-solid {
+    font-size: 1.15em;
+  }
+
+  #textInput {
+    rows: 6;
+  }
+
+  .reader-container {
+    padding-bottom: 15em;
+  }
+}
